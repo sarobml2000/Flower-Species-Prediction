@@ -1,1 +1,92 @@
+                                                                            ------START OF CODE-------
 
+#Here the famous Iris flower dataset is used for predicting the species of a flower.
+#The dataset consists of 50 samples of three species of flowers or a total of 150 samples.
+#The three flower species are:Iris setosa, Iris virginica and Iris versicolor of the Iris family.
+#Four features were recorded from each sample:the length and width of the sepals and petals in cm.
+
+#Outline of the project.
+#Here first Exploratory Data Analysis(EDA) is done on the data to find out which flower species is the most separable.
+#Some further visualization is done with some graphs(pairplot,kde plot) to understand the data.
+#The data is then split and trained using a SVM for prediction.
+#Finally the classification report and confusion matrix is prepared. 
+
+#First images of each flower species is displayed here.
+
+# The Iris Setosa
+from IPython.display import Image
+url = 'http://upload.wikimedia.org/wikipedia/commons/5/56/Kosaciec_szczecinkowaty_Iris_setosa.jpg'
+Image(url,width=300, height=300)
+
+# The Iris Versicolor
+from IPython.display import Image
+url = 'http://upload.wikimedia.org/wikipedia/commons/4/41/Iris_versicolor_3.jpg'
+Image(url,width=300, height=300)
+
+# The Iris Virginica
+from IPython.display import Image
+url = 'http://upload.wikimedia.org/wikipedia/commons/9/9f/Iris_virginica.jpg'
+Image(url,width=300, height=300)
+
+#Importing the visualization library seaborn and loading the dataset.
+
+import seaborn as sns
+iris = sns.load_dataset('iris')
+
+#Importing some more libraries.
+
+import pandas as pd
+import matplotlib.pyplot as plt
+%matplotlib inline
+
+#Now a pairplot is created to find out which two flower species is the most separable.
+
+sns.pairplot(iris,hue='species',palette='Dark2')
+
+#From the pairplot above we can see that the species setosa is the most separable.
+#A kde plot of sepal_length versus sepal width for setosa species of flower is created for better visualization.
+
+setosa = iris[iris['species']=='setosa']
+sns.kdeplot( setosa['sepal_width'], setosa['sepal_length'],
+                 cmap="plasma", shade=True, shade_lowest=False)
+                 
+#Now the sklearn library is imported and the data is split into train and test modules.
+
+from sklearn.model_selection import train_test_split
+
+X = iris.drop('species',axis=1)
+y = iris['species']
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.30)
+
+#The SVM classifier is imported and the model is fit with the training data.
+
+from sklearn.svm import SVC
+svc_model = SVC()
+
+#Now the GridSearchCV module is imported from sklearn.
+
+from sklearn.model_selection import GridSearchCV
+
+#A dictionary called param_grid is created and filled out with some intuitive parameters for C and gamma.
+
+param_grid = {'C': [0.1,1, 10, 100], 'gamma': [1,0.1,0.01,0.001]} 
+
+#A GridsearchCV object is created and fit with the training data.
+
+grid = GridSearchCV(SVC(),param_grid,refit=True,verbose=2)
+grid.fit(X_train,y_train)
+
+#Now the grid model is used for making predictions.
+
+grid_predictions = grid.predict(X_test)
+
+#Finally the confusion matrix and classification report is created to see how well our model has performed.
+
+print(confusion_matrix(y_test,grid_predictions))
+
+print(classification_report(y_test,grid_predictions))
+
+#From the above classification report we can see that we have a pretty good F1 score and an excellent recall as well.
+#Therefore using our SVM model we can accurately distinguish that a flower belongs to which category of Iris with 98% accuracy.
+
+                                                                            -------END OF CODE-------
