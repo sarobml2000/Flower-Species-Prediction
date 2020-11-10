@@ -89,4 +89,4 @@ print(classification_report(y_test,grid_predictions))
 #From the above classification report we can see that we have a pretty good F1 score and an excellent recall as well.
 #Therefore using our SVM model we can accurately distinguish that a flower belongs to which category of Iris with 98% accuracy.
 
-                                                                            -------END OF CODE-------
+                                                                            ------END OF CODE------
