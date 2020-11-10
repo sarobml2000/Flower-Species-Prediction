@@ -1,0 +1,2 @@
+# Flower-Species-Prediction
+This project aims to predict to which species of Iris family does a flower belong to among three species:Iris setosa, Iris virginica and Iris versicolor.A ML model is created which uses the Iris flower dataset containing 50 samples of each flower or a total of 50 samples.The model uses a SVM for classification and also runs a Gridsearch for finding the optimal parameters.
